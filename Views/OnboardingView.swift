@@ -9,35 +9,42 @@
 
 
 
+
 import SwiftUI
 
 struct OnboardingView: View {
 
-    //هنا عشان اربطهم ببعض ويصير يدري عن كل شي والتواصل مع باقي التغيرات واللوجك
-
-    // Connect the View to its ViewModel
+    // Connects the View to its ViewModel
+    // يربط الواجهة بالـ ViewModel حتى نتمكن من إدارة البيانات والتغييرات
     @StateObject private var viewModel = OnboardingViewModel()
 
     // Controls navigation to the Activity Page
+    // يتحكم في الانتقال إلى صفحة Activity
     @State private var showActivityPage = false
 
     var body: some View {
 
+        // NavigationStack manages navigation between app screens
+        // يدير التنقل بين صفحات التطبيق
         NavigationStack {
 
             GeometryReader { geometry in
 
                 ZStack {
 
-                    // Background
+                    // Main background color
+                    // لون خلفية الصفحة
                     Color("MainBG")
                         .ignoresSafeArea()
 
+                    // ScrollView allows scrolling when the screen is small
+                    // يسمح بالتمرير إذا كانت مساحة الشاشة غير كافية
                     ScrollView {
 
                         VStack(spacing: 0) {
 
                             // MARK: - Flame Symbol
+                            // أيقونة الشعلة أعلى الصفحة
 
                             Image(systemName: "flame.fill")
                                 .font(.system(size: 55))
@@ -47,10 +54,12 @@ struct OnboardingView: View {
                             Spacer(minLength: 45)
 
                             // MARK: - Welcome Section
+                            // قسم الترحيب بالمستخدم
 
                             VStack(alignment: .leading, spacing: 10) {
 
                                 HStack(spacing: 0) {
+
                                     Text("Hello ")
                                         .fontWeight(.regular)
 
@@ -60,6 +69,8 @@ struct OnboardingView: View {
                                 .font(.system(size: 42))
                                 .foregroundStyle(Color("PrimaryText"))
 
+                                // Displays a welcome message
+                                // يعرض رسالة ترحيبية للمستخدم
                                 Text("This app will help you learn everyday!")
                                     .font(.system(size: 18))
                                     .foregroundStyle(Color("SecondaryText"))
@@ -70,6 +81,7 @@ struct OnboardingView: View {
                                 .frame(height: 55)
 
                             // MARK: - Learning Goal
+                            // قسم تحديد هدف التعلم
 
                             VStack(alignment: .leading, spacing: 12) {
 
@@ -77,6 +89,8 @@ struct OnboardingView: View {
                                     .font(.system(size: 18))
                                     .foregroundStyle(Color("PrimaryText"))
 
+                                // Allows the user to enter their learning goal
+                                // يسمح للمستخدم بكتابة الشيء الذي يريد تعلمه
                                 TextField("Swift", text: $viewModel.learningGoal)
                                     .font(.system(size: 20))
                                     .foregroundStyle(Color("PrimaryText"))
@@ -91,8 +105,7 @@ struct OnboardingView: View {
                                 .frame(height: 45)
 
                             // MARK: - Duration Selection
-
-                            // بعدها اسم الشي الي ابيها من صفحة الفيو viewModel. هنا استدعاء من فيو مودل نحط
+                            // قسم اختيار مدة التعلم
 
                             VStack(alignment: .leading, spacing: 18) {
 
@@ -100,22 +113,31 @@ struct OnboardingView: View {
                                     .font(.system(size: 18))
                                     .foregroundStyle(Color("PrimaryText"))
 
-                                HStack(spacing: 12) {
+                                // Displays all available learning durations
+                                // يعرض جميع مدد التعلم المتاحة
+                                HStack(spacing: 8) {
 
                                     ForEach(LearningDuration.allCases) { duration in
 
+                                        // Updates the selected duration when tapped
+                                        // يحدّث مدة التعلم عند الضغط على الخيار
                                         Button {
+
                                             viewModel.selectedDuration = duration
+
                                         } label: {
 
                                             Text(duration.rawValue)
-                                                .font(.system(size: 18, weight: .medium))
+                                                .font(.system(size: 14, weight: .medium))
                                                 .foregroundStyle(
                                                     viewModel.selectedDuration == duration
                                                     ? Color("PrimaryText")
                                                     : Color("SecondaryText")
                                                 )
-                                                .frame(width: 105, height: 58)
+                                                // Gives each duration button equal width
+                                                // يجعل جميع أزرار المدة متساوية في العرض
+                                                .frame(maxWidth: .infinity)
+                                                .frame(height: 58)
                                                 .background(
                                                     viewModel.selectedDuration == duration
                                                     ? Color("AccentOrange")
@@ -128,17 +150,24 @@ struct OnboardingView: View {
                                 }
                             }
 
-                            // Flexible space: up to 229 points
+                            // Flexible space before the Start Learning button
+                            // مساحة مرنة قبل زر بدء التعلم
                             Spacer(minLength: 20)
                                 .frame(maxHeight: 229)
 
                             // MARK: - Start Learning Button
+                            // زر بدء التعلم
 
                             VStack(spacing: 8) {
 
                                 Button {
 
+                                    // Saves the selected goal and duration
+                                    // يحفظ هدف التعلم والمدة المختارة
                                     viewModel.startLearning()
+
+                                    // Opens the Activity page
+                                    // ينتقل إلى صفحة Activity
                                     showActivityPage = true
 
                                 } label: {
@@ -150,6 +179,8 @@ struct OnboardingView: View {
                                         .background(Color("AccentOrange"))
                                         .clipShape(Capsule())
                                 }
+                                // Prevents starting without entering a valid goal
+                                // يمنع بدء التعلم إذا لم يُدخل المستخدم هدفًا صالحًا
                                 .disabled(!viewModel.canStartLearning)
                                 .opacity(viewModel.canStartLearning ? 1 : 0.5)
 
@@ -164,6 +195,10 @@ struct OnboardingView: View {
                     }
                 }
             }
+
+            // MARK: - Navigation to Activity
+            // الانتقال إلى صفحة Activity
+
             .navigationDestination(isPresented: $showActivityPage) {
 
                 ActivityView(
@@ -172,9 +207,15 @@ struct OnboardingView: View {
                 )
             }
         }
+
+        // Keeps the app appearance in dark mode
+        // يحافظ على مظهر التطبيق بالوضع الداكن
         .preferredColorScheme(.dark)
     }
 }
+
+// MARK: - Preview
+// معاينة صفحة Onboarding داخل Xcode
 
 #Preview {
     OnboardingView()

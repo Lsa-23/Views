@@ -7,6 +7,7 @@
 
 
 
+
 import SwiftUI
 
 struct ActivityView: View {
@@ -20,8 +21,8 @@ struct ActivityView: View {
     // يدير تقدم المستخدم في التعلم
     @StateObject private var viewModel: ActivityViewModel
 
-    // Controls showing the SetNewGoalView page
-    // يتحكم في إظهار صفحة إنشاء هدف جديد
+    // Controls navigation to the SetNewGoalView page
+    // يتحكم في الانتقال إلى صفحة إنشاء هدف جديد
     @State private var showSetNewGoal = false
 
     // Initializes the ViewModel using the selected goal
@@ -166,17 +167,20 @@ struct ActivityView: View {
 
                 } else {
 
-                    // Shows the result when the goal period ends
-                    // يعرض نتيجة الهدف عند انتهاء مدته
+                    // Shows the result while keeping the Activity layout
+                    // يعرض نتيجة الهدف مع المحافظة على تصميم صفحة Activity
                     GoalCompletionView(
                         goalAchieved: viewModel.goalStatus == .completed,
                         onSetGoal: {
 
                             // Opens the SetNewGoalView page
-                            // يفتح صفحة إنشاء هدف جديد عند الضغط على Set a goal
+                            // ينتقل إلى صفحة إنشاء هدف جديد
                             showSetNewGoal = true
                         }
                     )
+                    // Gives the result content the same available space
+                    // يعطي محتوى النتيجة المساحة نفسها المخصصة لمحتوى التعلم
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
 
                 Spacer(minLength: 10)
@@ -196,12 +200,10 @@ struct ActivityView: View {
             viewModel.checkStreakReset()
         }
 
-        // Opens SetNewGoalView as a separate sheet
-        // يفتح صفحة إنشاء هدف جديد داخل نافذة مستقلة
-        .sheet(isPresented: $showSetNewGoal) {
-            NavigationStack {
-                SetNewGoalView(viewModel: viewModel)
-            }
+        // Navigates to SetNewGoalView in the current NavigationStack
+        // ينتقل إلى صفحة إنشاء هدف جديد ضمن مسار التنقل الحالي
+        .navigationDestination(isPresented: $showSetNewGoal) {
+            SetNewGoalView(viewModel: viewModel)
         }
     }
 

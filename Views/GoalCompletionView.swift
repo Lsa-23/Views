@@ -7,86 +7,95 @@
 
 
 
+
+
+
 import SwiftUI
 
 struct GoalCompletionView: View {
 
+    // Stores whether the user completed the learning goal
+    // يحدد هل المستخدم أكمل هدف التعلم أم لا
     let goalAchieved: Bool
 
+    // Handles navigation to the new goal page
+    // ينفذ الانتقال إلى صفحة الهدف الجديد
     let onSetGoal: () -> Void
 
     var body: some View {
 
-        ZStack {
+        VStack(spacing: 0) {
 
-            Color("MainBG")
-                .ignoresSafeArea()
+            Spacer()
 
-            VStack(spacing: 18) {
+            // MARK: - Result Content
+            // محتوى نتيجة الهدف
 
-                Spacer()
+            VStack(spacing: 10) {
 
-                // MARK: - Result Icon
-                // أيقونة نتيجة الهدف
+                // Displays the result icon
+                // يعرض أيقونة نتيجة الهدف
+                Image(
+                    systemName: goalAchieved
+                    ? "hands.and.sparkles"
+                    : "xmark.seal.fill"
+                )
+                .font(.system(size: 30))
+                .foregroundStyle(
+                    goalAchieved
+                    ? Color.yellow
+                    : Color("AccentOrange")
+                )
 
-                Image(systemName: goalAchieved ? "hands.clap.fill" : "exclamationmark.octagon.fill")
-                    .font(.system(size: 38))
-                    .foregroundStyle(
-                        goalAchieved
-                        ? Color.yellow
-                        : Color("AccentOrange")
-                    )
-
-                // MARK: - Result Message
-                // رسالة نتيجة الهدف
-
+                // Displays the main result message
+                // يعرض رسالة نتيجة الهدف
                 Text(
                     goalAchieved
                     ? "Well done!"
                     : "You didn't reach your goal this time."
                 )
-                .font(.system(size: 17, weight: .semibold))
+                .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(Color("PrimaryText"))
                 .multilineTextAlignment(.center)
 
+                // Displays the supporting message
+                // يعرض الرسالة التوضيحية
                 Text(
                     goalAchieved
                     ? "Ready for your next goal?"
                     : "Want to set another goal?"
                 )
-                .font(.system(size: 13))
+                .font(.system(size: 11))
                 .foregroundStyle(Color("SecondaryText"))
-
-                Spacer()
-
-                // MARK: - Set Goal Button
-                // زر إنشاء هدف جديد
-
-                Button {
-
-                    // Calls the action provided by ActivityView
-                    // ينفذ الأمر القادم من صفحة ActivityView
-                    onSetGoal()
-
-                } label: {
-
-                    // The button title stays the same in both cases
-                    // اسم الزر ثابت سواء اكتمل الهدف أو لم يكتمل
-
-                    Label("Set a goal", systemImage: "pencil")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundStyle(Color("PrimaryText"))
-                        .padding(.horizontal, 20)
-                        .frame(height: 42)
-                        .background(Color("AccentOrange"))
-                        .clipShape(Capsule())
-                }
-
-                Spacer()
+                .multilineTextAlignment(.center)
             }
-            .padding(25)
+
+            Spacer()
+                .frame(height: 38)
+
+            // MARK: - Set Goal Button
+            // زر إنشاء هدف جديد
+
+            Button {
+                // Opens the SetNewGoalView page
+                // يفتح صفحة إنشاء هدف جديد
+                onSetGoal()
+
+            } label: {
+
+                Label("Set a goal", systemImage: "pencil")
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(Color("PrimaryText"))
+                    .padding(.horizontal, 16)
+                    .frame(height: 34)
+                    .background(Color("AccentOrange"))
+                    .clipShape(Capsule())
+            }
+            .buttonStyle(.plain)
+
+            Spacer()
         }
-        .navigationBarBackButtonHidden(true)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
@@ -98,5 +107,6 @@ struct GoalCompletionView: View {
         GoalCompletionView(goalAchieved: true) {
             print("Set a goal")
         }
+        .background(Color("MainBG"))
     }
 }
