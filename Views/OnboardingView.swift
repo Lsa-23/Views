@@ -78,12 +78,12 @@ struct OnboardingView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
 
                             Spacer()
-                                .frame(height: 55)
+                                .frame(height: 25)
 
                             // MARK: - Learning Goal
                             // قسم تحديد هدف التعلم
 
-                            VStack(alignment: .leading, spacing: 12) {
+                            VStack(alignment: .leading, spacing: 11) {
 
                                 Text("I want to learn")
                                     .font(.system(size: 18))
@@ -102,7 +102,7 @@ struct OnboardingView: View {
                             }
 
                             Spacer()
-                                .frame(height: 45)
+                                .frame(height: 24)
 
                             // MARK: - Duration Selection
                             // قسم اختيار مدة التعلم
@@ -153,12 +153,12 @@ struct OnboardingView: View {
                             // Flexible space before the Start Learning button
                             // مساحة مرنة قبل زر بدء التعلم
                             Spacer(minLength: 20)
-                                .frame(maxHeight: 229)
+                                .frame(maxHeight: 232)
 
                             // MARK: - Start Learning Button
                             // زر بدء التعلم
 
-                            VStack(spacing: 8) {
+                            VStack(spacing: 4) {
 
                                 Button {
 
@@ -175,7 +175,7 @@ struct OnboardingView: View {
                                     Text("Start Learning")
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundStyle(Color("PrimaryText"))
-                                        .frame(width: 250, height: 65)
+                                        .frame(width: 220, height: 58)
                                         .background(Color("AccentOrange"))
                                         .clipShape(Capsule())
                                 }
@@ -190,7 +190,7 @@ struct OnboardingView: View {
                             }
                         }
                         .padding(.horizontal, 28)
-                        .padding(.bottom, 25)
+                        .padding(.bottom, 2)
                         .frame(minHeight: geometry.size.height)
                     }
                 }
