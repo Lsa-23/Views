@@ -5,6 +5,7 @@
 //  Created by Linah on 02/06/1448 AH.
 //
 
+
 import SwiftUI
 
 struct SetNewGoalView: View {
@@ -42,7 +43,6 @@ struct SetNewGoalView: View {
 
                 // MARK: - Navigation Header
                 // الجزء العلوي من الصفحة
-
                 HStack {
 
                     // Back button
@@ -85,7 +85,6 @@ struct SetNewGoalView: View {
 
                 // MARK: - Learning Goal
                 // قسم إدخال هدف التعلم
-
                 VStack(alignment: .leading, spacing: 15) {
 
                     Text("I want to learn")
@@ -104,7 +103,6 @@ struct SetNewGoalView: View {
 
                 // MARK: - Duration Selection
                 // قسم اختيار مدة التعلم
-
                 VStack(alignment: .leading, spacing: 15) {
 
                     Text("I want to learn it in a")
@@ -117,8 +115,11 @@ struct SetNewGoalView: View {
                         // يعرض جميع مدد التعلم المتاحة
                         ForEach(LearningDuration.allCases) { duration in
 
+                            // Updates the selected duration when tapped
+                            // يحدّث مدة التعلم عند الضغط على الخيار
                             Button {
                                 selectedDuration = duration
+
                             } label: {
 
                                 Text(duration.rawValue)
@@ -128,14 +129,22 @@ struct SetNewGoalView: View {
                                         ? Color("PrimaryText")
                                         : Color("SecondaryText")
                                     )
+
+                                    // Gives each duration button equal width
+                                    // يجعل جميع أزرار المدة متساوية في العرض
                                     .frame(maxWidth: .infinity)
                                     .frame(height: 40)
-                                    .background(
-                                        selectedDuration == duration
-                                        ? Color("AccentOrange")
-                                        : Color("InactiveButton")
+
+                                    // Adds one Liquid Glass effect with the selected duration color
+                                    // يضيف تأثير زجاج واحد مع الحفاظ على لون الخيار المحدد
+                                    .glassEffect(
+                                        .regular.tint(
+                                            selectedDuration == duration
+                                            ? Color("AccentOrange")
+                                            : Color("InactiveButton")
+                                        ),
+                                        in: Capsule()
                                     )
-                                    .clipShape(Capsule())
                             }
                             .buttonStyle(.plain)
                         }
@@ -185,7 +194,6 @@ struct SetNewGoalView: View {
 
 // MARK: - Preview
 // معاينة الصفحة داخل Xcode
-
 #Preview {
     NavigationStack {
         SetNewGoalView(
@@ -196,4 +204,3 @@ struct SetNewGoalView: View {
         )
     }
 }
-

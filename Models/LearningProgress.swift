@@ -8,6 +8,7 @@
 
 
 
+
 import Foundation
 
 // Defines the status of each learning day
@@ -60,6 +61,25 @@ struct LearningProgress: Codable {
     // Stores the number of learned days for the current goal
     // يخزن عدد أيام التعلم المحققة في الهدف الحالي فقط
     var goalLearnedDays: Int = 0
+
+    // MARK: - Undo Learned Data
+    // بيانات التراجع عن تسجيل يوم التعلم
+
+    // Stores the streak value before today's learning was recorded
+    // يحفظ قيمة الـ Streak قبل تسجيل تعلم اليوم
+    var previousCurrentStreak: Int? = nil
+
+    // Stores the learned days count before today's learning was recorded
+    // يحفظ عدد أيام التعلم قبل تسجيل اليوم
+    var previousGoalLearnedDays: Int? = nil
+
+    // Stores the last activity date before today's learning was recorded
+    // يحفظ تاريخ آخر نشاط قبل تسجيل تعلم اليوم
+    var previousLastActivityDate: Date? = nil
+
+    // Indicates whether an Undo snapshot is available
+    // يحدد إذا كانت بيانات التراجع متوفرة
+    var hasUndoSnapshot: Bool? = false
 
     // Calculates the required number of learning days
     // يحسب عدد أيام التعلم المطلوبة لإكمال الهدف
@@ -140,7 +160,6 @@ struct LearningProgress: Codable {
 
         // Subtract used freezes from the maximum limit
         // نطرح عدد مرات الاستخدام من الحد الأقصى
-
         // max prevents the result from going below zero
         // max تمنع ظهور نتيجة أقل من صفر
         max(0, freezeLimit - usedFreezes)

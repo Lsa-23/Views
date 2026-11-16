@@ -10,6 +10,7 @@
 
 
 
+
 import SwiftUI
 
 struct OnboardingView: View {
@@ -45,7 +46,6 @@ struct OnboardingView: View {
 
                             // MARK: - Flame Symbol
                             // أيقونة الشعلة أعلى الصفحة
-
                             Image(systemName: "flame.fill")
                                 .font(.system(size: 55))
                                 .foregroundStyle(Color("AccentOrange"))
@@ -55,11 +55,9 @@ struct OnboardingView: View {
 
                             // MARK: - Welcome Section
                             // قسم الترحيب بالمستخدم
-
                             VStack(alignment: .leading, spacing: 10) {
 
                                 HStack(spacing: 0) {
-
                                     Text("Hello ")
                                         .fontWeight(.regular)
 
@@ -82,7 +80,6 @@ struct OnboardingView: View {
 
                             // MARK: - Learning Goal
                             // قسم تحديد هدف التعلم
-
                             VStack(alignment: .leading, spacing: 11) {
 
                                 Text("I want to learn")
@@ -91,8 +88,8 @@ struct OnboardingView: View {
 
                                 // Allows the user to enter their learning goal
                                 // يسمح للمستخدم بكتابة الشيء الذي يريد تعلمه
-                                TextField("Swift", text: $viewModel.learningGoal)
-                                    .font(.system(size: 20))
+                                TextField("e.g. English, Swift, or Drawing", text: $viewModel.learningGoal)
+                                    .font(.system(size: 16))
                                     .foregroundStyle(Color("PrimaryText"))
                                     .tint(Color("AccentOrange"))
 
@@ -106,7 +103,6 @@ struct OnboardingView: View {
 
                             // MARK: - Duration Selection
                             // قسم اختيار مدة التعلم
-
                             VStack(alignment: .leading, spacing: 18) {
 
                                 Text("I want to learn it in a")
@@ -122,7 +118,6 @@ struct OnboardingView: View {
                                         // Updates the selected duration when tapped
                                         // يحدّث مدة التعلم عند الضغط على الخيار
                                         Button {
-
                                             viewModel.selectedDuration = duration
 
                                         } label: {
@@ -134,16 +129,22 @@ struct OnboardingView: View {
                                                     ? Color("PrimaryText")
                                                     : Color("SecondaryText")
                                                 )
+
                                                 // Gives each duration button equal width
                                                 // يجعل جميع أزرار المدة متساوية في العرض
                                                 .frame(maxWidth: .infinity)
                                                 .frame(height: 58)
-                                                .background(
-                                                    viewModel.selectedDuration == duration
-                                                    ? Color("AccentOrange")
-                                                    : Color("InactiveButton")
+
+                                                // Adds one Liquid Glass effect with the selected duration color
+                                                // يضيف تأثير زجاج واحد مع الحفاظ على لون الخيار المحدد
+                                                .glassEffect(
+                                                    .regular.tint(
+                                                        viewModel.selectedDuration == duration
+                                                        ? Color("AccentOrange")
+                                                        : Color("InactiveButton")
+                                                    ),
+                                                    in: Capsule()
                                                 )
-                                                .clipShape(Capsule())
                                         }
                                         .buttonStyle(.plain)
                                     }
@@ -157,7 +158,6 @@ struct OnboardingView: View {
 
                             // MARK: - Start Learning Button
                             // زر بدء التعلم
-
                             VStack(spacing: 4) {
 
                                 Button {
@@ -179,6 +179,7 @@ struct OnboardingView: View {
                                         .background(Color("AccentOrange"))
                                         .clipShape(Capsule())
                                 }
+
                                 // Prevents starting without entering a valid goal
                                 // يمنع بدء التعلم إذا لم يُدخل المستخدم هدفًا صالحًا
                                 .disabled(!viewModel.canStartLearning)
@@ -198,7 +199,6 @@ struct OnboardingView: View {
 
             // MARK: - Navigation to Activity
             // الانتقال إلى صفحة Activity
-
             .navigationDestination(isPresented: $showActivityPage) {
 
                 ActivityView(
@@ -216,7 +216,6 @@ struct OnboardingView: View {
 
 // MARK: - Preview
 // معاينة صفحة Onboarding داخل Xcode
-
 #Preview {
     OnboardingView()
 }

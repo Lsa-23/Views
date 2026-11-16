@@ -8,6 +8,10 @@
 
 
 
+
+
+
+
 import SwiftUI
 
 struct ActivityView: View {
@@ -28,7 +32,6 @@ struct ActivityView: View {
     // Initializes the ViewModel using the selected goal
     // ينشئ ViewModel باستخدام الهدف والمدة المختارة
     init(learningGoal: String, selectedDuration: LearningDuration) {
-
         self.learningGoal = learningGoal
         self.selectedDuration = selectedDuration
 
@@ -41,7 +44,6 @@ struct ActivityView: View {
     }
 
     var body: some View {
-
         ZStack {
 
             // Main background color
@@ -53,11 +55,8 @@ struct ActivityView: View {
 
                 // MARK: - Header
                 // الجزء العلوي من الصفحة
-
                 HStack {
-
                     VStack(alignment: .leading, spacing: 5) {
-
                         Text("Activity")
                             .font(.system(size: 25, weight: .bold))
                             .foregroundStyle(Color("PrimaryText"))
@@ -96,11 +95,8 @@ struct ActivityView: View {
 
                 // MARK: - Weekly Calendar
                 // تقويم أيام الأسبوع الحالي
-
                 HStack(spacing: 0) {
-
                     ForEach(weekDates, id: \.self) { date in
-
                         VStack(spacing: 8) {
 
                             // Displays the weekday name
@@ -132,7 +128,6 @@ struct ActivityView: View {
 
                 // MARK: - Statistics Cards
                 // بطاقات إحصائيات التعلم
-
                 HStack(spacing: 10) {
 
                     // Displays the current learning streak
@@ -158,11 +153,10 @@ struct ActivityView: View {
 
                 // MARK: - Goal Content
                 // محتوى الصفحة حسب حالة الهدف
-
-                if viewModel.goalStatus == .active {
+                if viewModel.goalStatus == .active || viewModel.canUndoLearned {
 
                     // Shows the learning buttons while the goal is active
-                    // يعرض أزرار التعلم ما دام الهدف مستمراً
+                    // يعرض أزرار التعلم ما دام الهدف مستمراً أو يمكن التراجع عن التسجيل
                     activeGoalContent
 
                 } else {
@@ -178,8 +172,6 @@ struct ActivityView: View {
                             showSetNewGoal = true
                         }
                     )
-                    // Gives the result content the same available space
-                    // يعطي محتوى النتيجة المساحة نفسها المخصصة لمحتوى التعلم
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
 
@@ -209,49 +201,57 @@ struct ActivityView: View {
 
     // MARK: - Active Goal Content
     // محتوى الهدف النشط
-
     private var activeGoalContent: some View {
-
         VStack(spacing: 22) {
 
             // MARK: - Learned Button
-            // زر تسجيل يوم التعلم
-
+            // زر تسجيل يوم التعلم والتراجع عنه
             Button {
 
-                // Records today as a learned day
-                // يسجل اليوم كيوم تعلم
-                viewModel.logLearned()
+                // Undo the learned status if today is already logged
+                // يلغي تسجيل التعلم إذا كان اليوم مسجلاً بالفعل
+                if viewModel.canUndoLearned {
+                    viewModel.undoLearned()
+                } else {
+
+                    // Records today as a learned day
+                    // يسجل اليوم كيوم تعلم
+                    viewModel.logLearned()
+                }
 
             } label: {
-
                 VStack(spacing: 5) {
 
+                    // Changes the button title based on today's status
+                    // يغير نص الزر حسب حالة تسجيل اليوم
                     Text(
-                        viewModel.todayStatus == .learned
+                        viewModel.canUndoLearned
+                        ? "Undo Learned"
+                        : viewModel.todayStatus == .learned
                         ? "Logged as Learned"
                         : viewModel.todayStatus == .freezed
                         ? "Day Freezed"
                         : "Log as Learned"
                     )
-                    .font(.system(size: 14, weight: .semibold))
+                    .font(.system(size: 24, weight: .semibold))
                     .foregroundStyle(Color("PrimaryText"))
                 }
-                .frame(width: 180, height: 180)
+                .frame(width: 300, height: 300)
                 .background(
-                    viewModel.canLogLearned
+                    viewModel.canLogLearned || viewModel.canUndoLearned
                     ? Color("AccentOrange")
                     : Color("InactiveButton")
                 )
                 .clipShape(Circle())
             }
-            .disabled(!viewModel.canLogLearned)
+
+            // Allow tapping to log or undo
+            // نسمح بالضغط للتسجيل أو التراجع
+            .disabled(!viewModel.canLogLearned && !viewModel.canUndoLearned)
 
             // MARK: - Freeze Button
             // زر استخدام Freeze
-
             VStack(spacing: 8) {
-
                 Button {
 
                     // Uses one freeze for today
@@ -259,7 +259,6 @@ struct ActivityView: View {
                     viewModel.freezeDay()
 
                 } label: {
-
                     Text(
                         viewModel.todayStatus == .freezed
                         ? "Day Freezed"
@@ -267,10 +266,11 @@ struct ActivityView: View {
                         ? "Already Learned"
                         : "Freeze for a day"
                     )
-                    .font(.system(size: 14, weight: .semibold))
+                    .font(.system(size: 16, weight: .semibold))
                     .foregroundStyle(Color("PrimaryText"))
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 42)
+                    // Controls the button width and height
+                    // يتحكم في عرض وارتفاع الزر
+                    .frame(width: 280, height: 40)
                     .background(
                         viewModel.canFreeze
                         ? Color.cyan
@@ -279,28 +279,27 @@ struct ActivityView: View {
                     .clipShape(Capsule())
                 }
                 .disabled(!viewModel.canFreeze)
-
+                .padding(.top, 50)
                 // Displays the number of used freezes
                 // يعرض عدد مرات استخدام Freeze من إجمالي الرصيد
                 Text(
                     "\(viewModel.progress.usedFreezes) out of \(viewModel.progress.freezeLimit) Freezes used"
                 )
-                .font(.system(size: 10))
+                .font(.system(size: 14))
                 .foregroundStyle(Color("SecondaryText"))
+                .padding(.top, 8)
             }
         }
     }
 
     // MARK: - Statistics Card
-    // تصميم بطاقة الإحصائيات
-
+    // تصميم بطاقة الإحصائيات مع تأثير الزجاج
     private func statCard(
         icon: String,
         value: String,
         label: String,
         color: Color
     ) -> some View {
-
         VStack(spacing: 5) {
 
             // Displays the card icon
@@ -323,8 +322,16 @@ struct ActivityView: View {
         }
         .frame(maxWidth: .infinity)
         .frame(height: 65)
-        .background(Color("InactiveButton"))
-        .clipShape(RoundedRectangle(cornerRadius: 17))
+
+        // Adds the Liquid Glass effect to the statistics card
+        // يضيف تأثير الزجاج على بطاقة الإحصائيات
+        .glassEffect(
+            .regular.tint(Color("InactiveButton").opacity(1)),
+            in: RoundedRectangle(cornerRadius: 17)
+        )
+
+        // Keeps the original card border
+        // يحافظ على الإطار الأصلي للبطاقة
         .overlay {
             RoundedRectangle(cornerRadius: 17)
                 .stroke(Color("Divider"), lineWidth: 1)
@@ -333,9 +340,7 @@ struct ActivityView: View {
 
     // MARK: - Current Week Dates
     // حساب تواريخ أيام الأسبوع الحالي
-
     private var weekDates: [Date] {
-
         let calendar = Calendar.current
 
         // Gets today's date without the time
@@ -370,7 +375,6 @@ struct ActivityView: View {
 
 // MARK: - Preview
 // معاينة صفحة النشاط داخل Xcode
-
 #Preview {
     NavigationStack {
         ActivityView(
