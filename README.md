@@ -1,4 +1,4 @@
-Learning 📚
+<h1 align="center"><strong>Learning 📚</strong></h1>
 
 <p align="center">   <img src="cover.JPEG" width="100%" alt="Learning App Cover"> </p>
 
