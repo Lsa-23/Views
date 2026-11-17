@@ -1,6 +1,6 @@
 Learning 📚
 
-<p align="center">   <img src="Screenshots/cover.jpeg" width="100%" alt="Learning App Cover"> </p>
+<p align="center">   <img src="Screenshots/cover.JPEG" width="100%" alt="Learning App Cover"> </p>
 
 About the App
 
