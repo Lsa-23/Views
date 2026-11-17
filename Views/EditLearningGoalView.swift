@@ -6,6 +6,7 @@
 //
 
 
+
 import SwiftUI
 
 struct EditLearningGoalView: View {
@@ -111,15 +112,13 @@ struct EditLearningGoalView: View {
 
                     HStack(spacing: 10) {
 
-                        // Displays all available learning durations
-                        // يعرض جميع مدد التعلم المتاحة
+                      
                         ForEach(LearningDuration.allCases) { duration in
-
+                            
                             // Updates the selected duration when tapped
                             // يحدّث مدة التعلم عند الضغط على الخيار
                             Button {
                                 selectedDuration = duration
-
                             } label: {
 
                                 Text(duration.rawValue)
@@ -133,7 +132,7 @@ struct EditLearningGoalView: View {
                                     // Gives each duration button equal width
                                     // يجعل جميع أزرار المدة متساوية في العرض
                                     .frame(maxWidth: .infinity)
-                                    .frame(height: 40)
+                                    .frame(height: 58)
 
                                     // Adds one Liquid Glass effect with the selected duration color
                                     // يضيف تأثير زجاج واحد مع الحفاظ على لون الخيار المحدد

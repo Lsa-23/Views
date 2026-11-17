@@ -10,6 +10,8 @@
 
 
 
+
+
 import Foundation
 import Combine
 
@@ -129,12 +131,6 @@ class ActivityViewModel: ObservableObject {
         // نتحقق أولاً إذا كان المستخدم أكمل أيام التعلم المطلوبة
         if progress.goalLearnedDays >= progress.requiredLearningDays {
             return .completed
-        }
-
-        // TEMPORARY TEST: Force the one-day goal to show Goal Not Met
-        // اختبار مؤقت: نجعل هدف اليوم الواحد يظهر حالة عدم إكمال الهدف
-        if progress.selectedDuration == .oneDay {
-            return .notMet
         }
 
         // Check if the goal period has ended

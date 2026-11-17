@@ -6,6 +6,7 @@
 //
 
 
+
 import SwiftUI
 
 struct SetNewGoalView: View {
@@ -91,6 +92,8 @@ struct SetNewGoalView: View {
                         .font(.system(size: 15))
                         .foregroundStyle(Color("PrimaryText"))
 
+                    // Allows the user to enter a new learning goal
+                    // يسمح للمستخدم بإدخال هدف تعلم جديد
                     TextField("Swift", text: $learningGoal)
                         .font(.system(size: 17))
                         .foregroundStyle(Color("PrimaryText"))
@@ -111,15 +114,14 @@ struct SetNewGoalView: View {
 
                     HStack(spacing: 10) {
 
-                        // Displays all available learning durations
-                        // يعرض جميع مدد التعلم المتاحة
+                        // Displays the available learning durations except One Day
+                       
                         ForEach(LearningDuration.allCases) { duration in
-
+                            
                             // Updates the selected duration when tapped
                             // يحدّث مدة التعلم عند الضغط على الخيار
                             Button {
                                 selectedDuration = duration
-
                             } label: {
 
                                 Text(duration.rawValue)
@@ -133,7 +135,7 @@ struct SetNewGoalView: View {
                                     // Gives each duration button equal width
                                     // يجعل جميع أزرار المدة متساوية في العرض
                                     .frame(maxWidth: .infinity)
-                                    .frame(height: 40)
+                                    .frame(height: 58)
 
                                     // Adds one Liquid Glass effect with the selected duration color
                                     // يضيف تأثير زجاج واحد مع الحفاظ على لون الخيار المحدد

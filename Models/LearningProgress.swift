@@ -9,10 +9,12 @@
 
 
 
+
 import Foundation
 
 // Defines the status of each learning day
 // نحدد حالة كل يوم في سجل التعلم
+
 enum DayStatus: String, Codable {
 
     // The user completed learning on this day
@@ -26,6 +28,7 @@ enum DayStatus: String, Codable {
 
 // Stores the user's learning progress
 // نخزن جميع البيانات المتعلقة بتقدم المستخدم في التعلم
+
 struct LearningProgress: Codable {
 
     // Stores the user's learning goal
@@ -50,6 +53,7 @@ struct LearningProgress: Codable {
 
     // Stores the date of the user's last activity
     // يخزن تاريخ آخر نشاط للمستخدم
+
     // Optional because the user may not have any activity yet
     // استخدمنا Optional لأن المستخدم قد لا يكون لديه نشاط سابق
     var lastActivityDate: Date? = nil
@@ -89,18 +93,13 @@ struct LearningProgress: Codable {
         // نتحقق من المدة التي اختارها المستخدم
         switch selectedDuration {
 
-        // One day requires only 1 learning day
-        // مدة اليوم الواحد تحتاج إلى يوم تعلم واحد فقط
-        case .oneDay:
-            return 1
-
         // A week requires 7 learning days
         // الأسبوع يحتاج إلى 7 أيام تعلم
         case .week:
             return 7
 
-        // A month temporarily requires 30 learning days
-        // الشهر يحتاج مؤقتاً إلى 30 يوم تعلم
+        // A month requires 30 learning days
+        // الشهر يحتاج إلى 30 يوم تعلم
         case .month:
             return 30
 
@@ -132,11 +131,6 @@ struct LearningProgress: Codable {
         // نتحقق من مدة التعلم المختارة
         switch selectedDuration {
 
-        // One day is a temporary testing option with no freezes
-        // خيار اليوم الواحد مخصص للاختبار مؤقتاً ولا يسمح باستخدام Freeze
-        case .oneDay:
-            return 0
-
         // A week allows 2 freezes
         // الأسبوع يسمح باستخدام Freeze مرتين
         case .week:
@@ -156,10 +150,12 @@ struct LearningProgress: Codable {
 
     // Calculates the remaining number of freezes
     // يحسب عدد مرات Freeze المتبقية للمستخدم
+
     var remainingFreezes: Int {
 
         // Subtract used freezes from the maximum limit
         // نطرح عدد مرات الاستخدام من الحد الأقصى
+
         // max prevents the result from going below zero
         // max تمنع ظهور نتيجة أقل من صفر
         max(0, freezeLimit - usedFreezes)

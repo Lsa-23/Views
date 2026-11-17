@@ -11,6 +11,7 @@
 
 
 
+
 import SwiftUI
 
 struct OnboardingView: View {
@@ -58,6 +59,7 @@ struct OnboardingView: View {
                             VStack(alignment: .leading, spacing: 10) {
 
                                 HStack(spacing: 0) {
+
                                     Text("Hello ")
                                         .fontWeight(.regular)
 
@@ -88,10 +90,13 @@ struct OnboardingView: View {
 
                                 // Allows the user to enter their learning goal
                                 // يسمح للمستخدم بكتابة الشيء الذي يريد تعلمه
-                                TextField("e.g. English, Swift, or Drawing", text: $viewModel.learningGoal)
-                                    .font(.system(size: 16))
-                                    .foregroundStyle(Color("PrimaryText"))
-                                    .tint(Color("AccentOrange"))
+                                TextField(
+                                    "e.g. English, Swift, or Drawing",
+                                    text: $viewModel.learningGoal
+                                )
+                                .font(.system(size: 16))
+                                .foregroundStyle(Color("PrimaryText"))
+                                .tint(Color("AccentOrange"))
 
                                 Rectangle()
                                     .fill(Color("Divider"))
@@ -109,15 +114,16 @@ struct OnboardingView: View {
                                     .font(.system(size: 18))
                                     .foregroundStyle(Color("PrimaryText"))
 
-                                // Displays all available learning durations
-                                // يعرض جميع مدد التعلم المتاحة
+                                // Displays the available learning durations
+                                // يعرض مدد التعلم المتاحة
                                 HStack(spacing: 8) {
-
+                                   
                                     ForEach(LearningDuration.allCases) { duration in
-
+                                     
                                         // Updates the selected duration when tapped
                                         // يحدّث مدة التعلم عند الضغط على الخيار
                                         Button {
+
                                             viewModel.selectedDuration = duration
 
                                         } label: {
