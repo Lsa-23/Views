@@ -321,7 +321,7 @@ struct ActivityView: View {
                 .foregroundStyle(Color("SecondaryText"))
         }
         .frame(maxWidth: .infinity)
-        .frame(height: 65)
+        .frame(height: 80)
 
         // Adds the Liquid Glass effect to the statistics card
         // يضيف تأثير الزجاج على بطاقة الإحصائيات
