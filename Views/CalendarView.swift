@@ -11,8 +11,11 @@ struct CalendarView: View {
 
     @ObservedObject var viewModel: ActivityViewModel
 
-    @State private var currentMonth = Date()
-
+    // Starts the calendar from January of the current year
+    // يبدأ التقويم من شهر يناير للسنة الحالية
+    @State private var currentMonth = Calendar.current.date(
+        from: Calendar.current.dateComponents([.year], from: Date())
+    ) ?? Date()
     private let calendar = Calendar.current
 
     private let weekdays = ["S", "M", "T", "W", "T", "F", "S"]
