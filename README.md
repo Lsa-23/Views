@@ -45,7 +45,12 @@ The purpose of Learning is to encourage consistent learning habits by helping us
 - Xcode
 
 ---
-
-
-
+<h2>Contact 📮📩</h2>
+---
+<p align="center">
+  Developed by Linah ✨
+  <br>
+  <a href="https://github.com/Lsa-23">GitHub</a> |
+  <a href="https://www.linkedin.com/in/linah-salem-630abb310/">LinkedIn</a>
+</p>
 
