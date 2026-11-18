@@ -46,7 +46,7 @@ The purpose of Learning is to encourage consistent learning habits by helping us
 
 ---
 <h2>Contact 📮📩</h2>
----
+
 <p align="center">
   Developed by Linah ✨
   <br>
