@@ -112,9 +112,10 @@ class ActivityViewModel: ObservableObject {
     var learnedDaysCount: Int {
         progress.goalLearnedDays
     }
-
+      // تراجع دل
     // Checks whether today's Learned action can be undone
     // يتحقق إذا كان بإمكان المستخدم التراجع عن تسجيل تعلم اليوم
+    //هذه الخاصية تتأكد من وجود تسجيل تعلم اليوم ومن إمكانية التراجع عنه.
     var canUndoLearned: Bool {
         todayStatus == .learned &&
         progress.hasUndoSnapshot == true
@@ -143,17 +144,19 @@ class ActivityViewModel: ObservableObject {
         // إذا لم يتحقق أي شرط، فالهدف لا يزال مستمراً
         return .active
     }
-
+     //DL1
+     // دليل منع الحالتين في اليوم نفسله
     // Checks if the user can log today as learned
     // يتحقق إذا كان بإمكان المستخدم تسجيل اليوم كيوم تعلم
     var canLogLearned: Bool {
-        todayStatus == nil && goalStatus == .active
+        todayStatus == nil && goalStatus == .active //تتسجل حسب ايش ضغط اليوزر
     }
-
+       //DL2
+      //دليل منع الحالتين في اليوم نفسه
     // Checks if the user can freeze today
     // يتحقق إذا كان بإمكان المستخدم استخدام Freeze اليوم
     var canFreeze: Bool {
-        todayStatus == nil &&
+        todayStatus == nil && //تتسجل حسب ايش ضغط اليوزر
         progress.remainingFreezes > 0 &&
         goalStatus == .active
     }
@@ -248,10 +251,11 @@ class ActivityViewModel: ObservableObject {
         // نحفظ التقدم بعد تسجيل يوم التعلم
         saveProgress()
     }
+        //DL3
+    //هذا يثبت إمكانية التراجع واسترجاع القيم السابقة.
 
-    // MARK: - Undo Learned
+    // MARK: - Undo Learned دليل
     // التراجع عن تسجيل يوم التعلم
-
     // Removes today's learned record and restores the previous values
     // يحذف تسجيل تعلم اليوم ويرجع القيم السابقة كما كانت
     func undoLearned() {
@@ -297,7 +301,8 @@ class ActivityViewModel: ObservableObject {
         // نحفظ التقدم بعد التراجع عن التسجيل
         saveProgress()
     }
-
+     //DL4
+    //هذا يثبت تسجيل اليوم كـ Frozen.
     // MARK: - Freeze Day
     // استخدام Freeze
 
@@ -310,9 +315,10 @@ class ActivityViewModel: ObservableObject {
         guard canFreeze else {
             return
         }
-
+            //دليل فريز
         // Record today's status as freezed
         // نسجل حالة اليوم على أنها Freeze
+        // هنا بمجرديضغط اليوزر عليها تصيز التوداي ستايت فريزد وهنا بيتقفل لوق از ليرند ومارح يتحقق الشرط
         progress.dailyRecords[todayKey] = .freezed
 
         // Increase the number of used freezes

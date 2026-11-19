@@ -244,7 +244,12 @@ struct ActivityView: View {
                 )
                 .clipShape(Circle())
             }
+            //DL5
+            //هذا يثبت ربط حالة الأزرار بمنطق الـ ViewModel.
+                //دليل كيف يظهر لليوزر إذا ما يقدر يسجل تعلم، ولا يقدر يتراجع، يتعطل الزر.
+           // إذا سجل ليرند يتغير الزر إلى Undo Learned.
 
+             // اذا كان اليوم فروزن يطلع داي فريز ويكون البتن معطل
             // Allow tapping to log or undo
             // نسمح بالضغط للتسجيل أو التراجع
             .disabled(!viewModel.canLogLearned && !viewModel.canUndoLearned)
@@ -278,6 +283,9 @@ struct ActivityView: View {
                     )
                     .clipShape(Capsule())
                 }
+                //DL6
+                //هذا يثبت ربط حالة الأزرار بمنطق الـ ViewModel.
+                // هنا يتعطل زر الفريز اذا كان اليوم مسجل قبل او خلص رصيد الفريز او القول انتهى
                 .disabled(!viewModel.canFreeze)
                 .padding(.top, 50)
                 // Displays the number of used freezes
